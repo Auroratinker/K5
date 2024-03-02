@@ -1,5 +1,9 @@
+Certainly! Here's the modified code with the changes to the image slider styles:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +35,7 @@
         .intro-section {
             position: relative;
             height: 100vh;
-            background-image: url('public/Screenshot\ 2024-03-01\ at\ 12.38.22\ PM.png'); /* Replace with your image path */
+            background-image: url('public/Screenshot\ 2024-03-01\ at\ 12.38.22\ PM.png');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -68,7 +72,7 @@
         .image-slider {
             overflow: hidden;
             position: relative;
-            height: 400px;
+            max-height: 400px;
             margin-bottom: 20px;
             border-radius: 10px;
         }
@@ -79,14 +83,15 @@
         }
 
         .slide {
-            min-width: 100%;
+            flex: 0 0 auto;
             box-sizing: border-box;
             overflow: hidden;
         }
 
         img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             border-radius: 8px;
         }
 
@@ -135,6 +140,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="intro-section">
         <header>
@@ -187,107 +193,46 @@
 
     <!-- ... (previous code) ... -->
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const sliderContainer = document.querySelector('.slider-container');
-        const slides = document.querySelectorAll('.slide');
-        const main = document.querySelector('main');
-        const introSection = document.querySelector('.intro-section');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sliderContainer = document.querySelector('.slider-container');
+            const slides = document.querySelectorAll('.slide');
+            const main = document.querySelector('main');
+            const introSection = document.querySelector('.intro-section');
 
-        let currentIndex = 0;
-        let isIntroSectionVisible = true;
+            let currentIndex = 0;
+            let isIntroSectionVisible = true;
 
-        function updateSlider() {
-            const newTransformValue = -currentIndex * 100 + '%';
-            sliderContainer.style.transform = 'translateX(' + newTransformValue + ')';
-        }
+            function updateSlider() {
+                const newTransformValue = -currentIndex * 100 + '%';
+                sliderContainer.style.transform = 'translateX(' + newTransformValue + ')';
+            }
 
-        function onScroll() {
-            const introSectionBottom = introSection.getBoundingClientRect().bottom;
-            const newIsIntroSectionVisible = introSectionBottom > window.innerHeight * 0.07;
+            function onScroll() {
+                const introSectionBottom = introSection.getBoundingClientRect().bottom;
+                const newIsIntroSectionVisible = introSectionBottom > window.innerHeight * 0.07;
 
-            if (newIsIntroSectionVisible !== isIntroSectionVisible) {
-                isIntroSectionVisible = newIsIntroSectionVisible;
+                if (newIsIntroSectionVisible !== isIntroSectionVisible) {
+                    isIntroSectionVisible = newIsIntroSectionVisible;
 
-                // If the intro section is visible, don't slide
-                currentIndex = isIntroSectionVisible ? 0 : currentIndex;
+                    // If the intro section is visible, don't slide
+                    currentIndex = isIntroSectionVisible ? 0 : currentIndex;
 
-                // If the intro section is not fully visible, update the slider based on scroll position
-                if (!isIntroSectionVisible) {
-                    const scrollPercentage = (window.scrollY / (main.offsetHeight - window.innerHeight * 0.3)) * 100;
-                    currentIndex = Math.min(slides.length - 1, Math.round((slides.length - 1) * (scrollPercentage / 100)));
+                    // If the intro section is not fully visible, update the slider based on scroll position
+                    if (!isIntroSectionVisible) {
+                        const scrollPercentage = (window.scrollY / (main.offsetHeight - window.innerHeight * 0.3)) * 100;
+                        currentIndex = Math.min(slides.length - 1, Math.round((slides.length - 1) * (scrollPercentage / 100)));
+                    }
+
+                    updateSlider();
                 }
-
-                updateSlider();
             }
-        }
 
-        window.addEventListener('scroll', onScroll);
+            window.addEventListener('scroll', onScroll);
 
-        // Initial setup
-        updateSlider();
-    });
-</script>
-
-<!-- ... (remaining code) ... -->
-
-</body>
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const sliderContainer = document.querySelector('.slider-container');
-        const slides = document.querySelectorAll('.slide');
-        const main = document.querySelector('main');
-        const introSection = document.querySelector('.intro-section');
-        const contactButton = document.querySelector('button');
-        const contactInfo = document.createElement('div');
-        contactInfo.id = 'contactInfo';
-        contactInfo.classList.add('contact-info');
-        contactInfo.innerHTML = '<p>Email: your-email@example.com</p><p>Phone: (123) 456-7890</p><p>Insta: @your_instagram</p>';
-
-        let currentIndex = 0;
-        let isIntroSectionVisible = true;
-
-        function updateSlider() {
-            const newTransformValue = -currentIndex * 100 + '%';
-            sliderContainer.style.transform = 'translateX(' + newTransformValue + ')';
-        }
-
-        function onScroll() {
-            const introSectionBottom = introSection.getBoundingClientRect().bottom;
-            const newIsIntroSectionVisible = introSectionBottom > window.innerHeight * 0.07;
-
-            if (newIsIntroSectionVisible !== isIntroSectionVisible) {
-                isIntroSectionVisible = newIsIntroSectionVisible;
-
-                // If the intro section is visible, don't slide
-                currentIndex = isIntroSectionVisible ? 0 : currentIndex;
-
-                // If the intro section is not fully visible, update the slider based on scroll position
-                if (!isIntroSectionVisible) {
-                    const scrollPercentage = (window.scrollY / (main.offsetHeight - window.innerHeight * 0.3)) * 100;
-                    currentIndex = Math.min(slides.length - 1, Math.round((slides.length - 1) * (scrollPercentage / 100)));
-                }
-
-                updateSlider();
-            }
-        }
-
-        // Toggle between button and contact info on button click
-        contactButton.addEventListener('click', function () {
-            if (contactButton.style.display !== 'none') {
-                contactButton.style.display = 'none';
-                main.appendChild(contactInfo);
-            }
+            // Initial setup
+            updateSlider();
         });
-
-        window.addEventListener('scroll', onScroll);
-
-        // Initial setup
-        updateSlider();
-    });
-</script>
+    </script>
 
 
-</html>
